@@ -1,0 +1,83 @@
+name: Build shaloArchiver
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout archiver
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ (github.event_name == 'workflow_dispatch' && github.ref_name) || 'main' }}
+          path: main
+          submodules: true
+
+      - name: Cache boost
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: boost
+          key: ${{ runner.os }}-boost
+
+      - name: Checkout boost
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        uses: actions/checkout@v3
+        with:
+          repository: boostorg/boost
+          ref: boost-1.82.0
+          path: boost
+
+      - name: Update boost submodules and Bootstrap
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          git submodule update --init --depth 1 -j 4
+          .\bootstrap.bat
+        working-directory: boost
+
+      - name: Build boost libraries
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          .\b2.exe toolset=msvc --build-dir=build --stagedir=stage link=static threading=multi variant=release runtime-link=static address-model=64 --with-program_options stage
+        working-directory: boost
+
+      - name: Build boost headers and Add boost path to GITHUB_ENV
+        run: |
+          Remove-Item boost -Recurse -Force -ErrorAction 'Ignore'
+          .\b2.exe headers
+          echo "BOOSTROOT=$((pwd).Path)" >> $env:GITHUB_ENV
+          echo "BOOSTLIB=$((pwd).Path + "\stage\lib")" >> $env:GITHUB_ENV
+        working-directory: boost
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: main/shaloa-gui-frontend/package-lock.json
+
+      - name: Build archiver
+        run: .\build.bat
+        working-directory: main
+
+      - name: Archive shaloArchiver
+        uses: actions/upload-artifact@v3
+        with:
+          name: shaloa-gui-frontend-windows
+          path: main/shaloa-gui-frontend/dist/*.exe
+
+      - name: Archive license_list
+        uses: actions/upload-artifact@v3
+        with:
+          name: license_list
+          path: main/shaloa-gui-frontend/dist/license_list.csv

@@ -1,0 +1,49 @@
+appId: jp.co.axell.shalo.archiver
+productName: shaloArchiver
+directories:
+  buildResources: build
+files:
+  - "!**/.vscode/*"
+  - "!src/*"
+  - "!electron.vite.config.{js,ts,mjs,cjs}"
+  - "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}"
+  - "!{.env,.env.*,.npmrc,pnpm-lock.yaml}"
+  - "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
+asarUnpack:
+  - resources/*
+extraFiles:
+  - from: ../x64/Release/
+    to: "."
+    filter:
+      - shaloa.dll
+      - shaloa-cui-frontend.exe
+  - from: out/
+    to: "."
+    filter:
+      - LICENSE
+afterSign: build/notarize.js
+win:
+  fileAssociations:
+    - ext: shla
+      description: SHALO Archive
+  icon: "build/shaloArchiver-icon.ico"
+nsis:
+  artifactName: ${productName}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  icon: "build/shaloArchiver-icon.icns"
+dmg:
+  artifactName: ${name}-${version}.${ext}
+linux:
+  target:
+    - AppImage
+    - snap
+    - deb
+  category: Utility
+  icon: "build/shaloArchiver-icon.png"
+appImage:
+  artifactName: ${name}-${version}.${ext}
+npmRebuild: false

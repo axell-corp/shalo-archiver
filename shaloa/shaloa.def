@@ -1,0 +1,16 @@
+LIBRARY shaloa
+
+EXPORTS
+	shaloaEncodeW @1
+	shaloaEncodeA @2
+	shaloaDecodeW @3
+	shaloaDecodeA @4
+	shaloaCreateKeyW @5
+	shaloaCreateKeyA @6
+	shaloaImportKeyW @7
+	shaloaImportKeyA @8
+	shaloaExportKeyW @9
+	shaloaExportKeyA @10
+	shaloaDeleteKey @11
+	shaloaGetLastErrorDetailW @12
+	shaloaGetLastErrorDetailA @13
