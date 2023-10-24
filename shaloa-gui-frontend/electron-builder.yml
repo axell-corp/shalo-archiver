@@ -24,8 +24,8 @@ extraFiles:
 afterSign: build/notarize.js
 win:
   fileAssociations:
-    - ext: shla
-      description: SHALO Archive
+    - ext: shaa
+      description: SHALO AUTH Archive file
   icon: "build/shaloArchiver-icon.ico"
 nsis:
   artifactName: ${productName}-${version}-setup.${ext}

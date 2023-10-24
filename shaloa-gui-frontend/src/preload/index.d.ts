@@ -5,7 +5,7 @@ declare global {
   interface Window {
     electron: ElectronAPI;
     api: {
-      selectFile: (shlaOnly: boolean) => Promise<string | undefined>;
+      selectFile: (shaaOnly: boolean) => Promise<string | undefined>;
       showMessageDialog: (options: MessageBoxOptions) => Promise<number>;
       selectSaveFile: (filter?: FileFilter[]) => Promise<string | undefined>;
       execJsonMode: (params: string) => Promise<{
