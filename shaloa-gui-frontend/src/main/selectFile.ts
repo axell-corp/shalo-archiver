@@ -1,15 +1,15 @@
 import { dialog, IpcMainInvokeEvent } from "electron";
 
-const selectFile = async (_: IpcMainInvokeEvent, shlaOnly: boolean) => {
+const selectFile = async (_: IpcMainInvokeEvent, shaaOnly: boolean) => {
   const result = await (async () => {
     try {
       return await dialog.showOpenDialog({
         properties: ["openFile"],
-        filters: shlaOnly
+        filters: shaaOnly
           ? [
               {
-                extensions: ["shla"],
-                name: "SHALO Archive"
+                extensions: ["shaa"],
+                name: "SHALO AUTH Archive file"
               }
             ]
           : undefined

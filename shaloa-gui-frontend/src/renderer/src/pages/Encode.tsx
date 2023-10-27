@@ -26,8 +26,8 @@ const openFileSelectDialog = async () => {
 const openOutputSelectDialog = async () => {
   const path = await api.selectSaveFile([
     {
-      extensions: ["shla"],
-      name: "SHALO Archive"
+      extensions: ["shaa"],
+      name: "SHALO AUTH Archive file"
     }
   ]);
   return path ?? "";

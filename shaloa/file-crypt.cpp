@@ -81,7 +81,7 @@ std::vector<uint8_t> generate_header(
     const std::vector<uint8_t>& rsa_pubkey_modulus
 ) {
     /*
-        signature("SHLA")                     | 4 bytes
+        signature("SHAA")                     | 4 bytes
         header length                         | 4 bytes
         entire file length                    | 8 bytes
         filename extension length             | 2 bytes
@@ -112,7 +112,7 @@ std::vector<uint8_t> generate_header(
     ret.reserve(header_length + 4);
 
     concat_vector(ret, {
-        std::vector<uint8_t>({'S', 'H', 'L', 'A'}),
+        std::vector<uint8_t>({'S', 'H', 'A', 'A'}),
         number_to_vector(header_length, sizeof(uint32_t)),
         number_to_vector(header_length + encrypted_file_size + 4, sizeof(uint64_t)),
         number_to_vector(filename_extension.size(), sizeof(uint16_t)), std::vector<uint8_t>(filename_extension.begin(), filename_extension.end()),
@@ -156,7 +156,7 @@ std::unique_ptr<encrypt_data> parse_file(std::vector<uint8_t> file) {
 
     auto signature_vector = split_vector_from_head(file, 4);
     auto signature = std::string(signature_vector.begin(), signature_vector.end());
-    if (signature != "SHLA") {
+    if (signature != "SHAA") {
         throw OtherException(SHALOA_RESULT_ERROR_INVALID_FILE, "ファイルのシグネチャが正しくありません");
     }
 

@@ -8,8 +8,8 @@ import { electronAPI } from "@electron-toolkit/preload";
 
 // Custom APIs for renderer
 const api = {
-  selectFile: (shlaOnly: boolean) =>
-    ipcRenderer.invoke("select-file", shlaOnly),
+  selectFile: (shaaOnly: boolean) =>
+    ipcRenderer.invoke("select-file", shaaOnly),
   showMessageDialog: (options: MessageBoxOptions) =>
     ipcRenderer.invoke("show-message-dialog", options),
   selectSaveFile: (filter?: FileFilter[]) =>
