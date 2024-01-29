@@ -39,7 +39,7 @@ SHALO Keyring は、SHALO AUTH のセットアップをしたり、格納され�
 
 shaloArchiver にも簡易的な鍵管理機能が付属していますが、より高度な操作が必要な場合は SHALO Keyring をインストールすることをお勧めします。
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > はじめて SHALO AUTH を使う場合は、初期設定のために SHALO Keyring をインストールする必要があります。
 
 ## 実行例
