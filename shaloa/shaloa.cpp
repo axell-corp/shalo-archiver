@@ -154,7 +154,7 @@ int _shaloa_get_last_error_detail(T *buf, size_t buflen, std::basic_string<T> &m
 }
 
 int shaloaGetLastErrorDetailW(wchar_t *buf, size_t buflen) {
-    auto message = convert_multibyte_to_wide(last_error_message, CP_ACP);
+    auto message = convert_multibyte_to_wide(last_error_message, CP_UTF8);
     return _shaloa_get_last_error_detail(buf, buflen, message);
 }
 
