@@ -5,11 +5,12 @@ call :build || call :error
 exit /b
 
 :error
-echo Build failed (Exit code: %ERRORLEVEL%)
+    echo Build failed (Exit code: %ERRORLEVEL%)
 exit /b
 
 :build
     msbuild .\cryptopp\cryptlib.vcxproj /t:build /p:Configuration=Release;Platform="x64" || exit /b !ERRORLEVEL!
+    chcp 65001
     msbuild .\shalo-archiver.sln /t:build /p:Configuration=Release || exit /b !ERRORLEVEL!
     cd shaloa-gui-frontend
     call npm ci || cd .. && exit /b !ERRORLEVEL!
