@@ -1,11 +1,13 @@
 @echo off
 @setlocal
 
+chcp 65001 > NUL
+
 call :build || call :error
 exit /b
 
 :error
-echo Build failed (Exit code: %ERRORLEVEL%)
+    echo Build failed (Exit code: %ERRORLEVEL%)
 exit /b
 
 :build
