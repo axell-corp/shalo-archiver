@@ -32,7 +32,7 @@
 
 あるいは、以下のリンクからもダウンロードしていただけます。
 
-[shaloArchiver-1.0.0-setup.exe](https://github.com/axell-corp/shalo-archiver/releases/download/v1.0.0/shaloArchiver-1.0.0-setup.exe)（68.8 MBytes）
+[shaloArchiver-1.0.1-setup.exe](https://github.com/axell-corp/shalo-archiver/releases/download/v1.0.1/shaloArchiver-1.0.1-setup.exe)（68.8 MBytes）
 
 ダウンロードした exe ファイルを実行することで、自動的にインストールが完了します。
 
