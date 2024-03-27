@@ -1,6 +1,6 @@
 {
   "name": "shaloa-gui-frontend",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Confidential file archiver using SHALO AUTH",
   "main": "./out/main/index.js",
   "author": {
