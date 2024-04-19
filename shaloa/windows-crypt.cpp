@@ -217,7 +217,7 @@ BCRYPT_RSAKEY_BLOB *cng_generate_rsa_key_blob() {
         BCryptCloseAlgorithmProvider(alg_handle, 0);
     };
 
-    result = BCryptGenerateKeyPair(alg_handle, &key_handle, 2048, 0);
+    result = BCryptGenerateKeyPair(alg_handle, &key_handle, 4096, 0);
     if (!NT_SUCCESS(result)) {
         throw OsException(ShaloaResult::SHALOA_RESULT_ERROR_CNG_OPERATION, result, error_msg);
     }

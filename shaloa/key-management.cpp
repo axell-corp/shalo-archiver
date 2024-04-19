@@ -19,7 +19,7 @@
 
 extern std::string last_error_message;
 
-constexpr int RSA_KEY_SIZE = 0x800;
+constexpr int RSA_KEY_SIZE = 0x1000;
 
 class PemKey {
 public:
