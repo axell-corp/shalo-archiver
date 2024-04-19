@@ -448,11 +448,13 @@ CK_OBJECT_HANDLE Token::find_rsa_key_by_modulus_hash(const std::vector<uint8_t>&
 {
     std::string error_str = "RSA 鍵の検索に失敗しました";
 
+    CK_KEY_TYPE rsa_key_type = CKK_RSA;
     CK_ATTRIBUTE attribute[] = {
-        {CKA_CLASS, &object_class, sizeof(object_class)}
+        {CKA_CLASS, &object_class, sizeof(object_class)},
+        {CKA_KEY_TYPE, &rsa_key_type, sizeof(CK_KEY_TYPE)}
     };
 
-    auto result = _func_list->C_FindObjectsInit(_session, attribute, 1);
+    auto result = _func_list->C_FindObjectsInit(_session, attribute, sizeof(attribute) / sizeof(CK_ATTRIBUTE));
     CK_OBJECT_HANDLE ret = CK_INVALID_HANDLE;
     CK_ULONG object_count = 0;
 
