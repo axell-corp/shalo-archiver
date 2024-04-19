@@ -401,11 +401,11 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
     //CK_OBJECT_CLASS object_class = CKO_PUBLIC_KEY;
 
     CK_ATTRIBUTE attribute[] = {
+        {CKA_CLASS, &object_class, sizeof(object_class)},
         {CKA_ID, _default_rsa_key_id, sizeof(_default_rsa_key_id)},
-        {CKA_CLASS, &object_class, sizeof(object_class)}
     };
 
-    auto result = _func_list->C_FindObjectsInit(_session, attribute, 2);
+    auto result = _func_list->C_FindObjectsInit(_session, attribute, sizeof(attribute) / sizeof(CK_ATTRIBUTE));
     if (result != CKR_OK) {
         throw TokenException(result, error_str);
     }
@@ -424,6 +424,21 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
 
     if (object_count == 0) {
         throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定の ID を持つオブジェクトが見つかりません");
+    }
+
+    // ecdsa鍵かどうかの確認
+    CK_KEY_TYPE key_type;
+    CK_ATTRIBUTE ecdsa_attribute[] = {
+        {CKA_KEY_TYPE, &key_type, sizeof(CK_KEY_TYPE)}
+    };
+
+    result = _func_list->C_GetAttributeValue(_session, ret, ecdsa_attribute, 1);
+    if (result != CKR_OK) {
+        throw TokenException(result, error_str);
+    }
+
+    if (key_type == CKK_ECDSA) {
+        throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定された ECDSA 鍵は使用できません");
     }
 
     return ret;
