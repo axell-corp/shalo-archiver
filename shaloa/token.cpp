@@ -426,7 +426,7 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
         throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定の ID を持つオブジェクトが見つかりません");
     }
 
-    // ecdsa鍵かどうかの確認
+    // RSA 鍵かどうかの確認
     CK_KEY_TYPE key_type;
     CK_ATTRIBUTE ecdsa_attribute[] = {
         {CKA_KEY_TYPE, &key_type, sizeof(CK_KEY_TYPE)}
@@ -437,8 +437,8 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
         throw TokenException(result, error_str);
     }
 
-    if (key_type == CKK_ECDSA) {
-        throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定された ECDSA 鍵は使用できません");
+    if (key_type != CKK_RSA) {
+        throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定された鍵は RSA 鍵でないため、使用できません");
     }
 
     return ret;
