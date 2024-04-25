@@ -401,11 +401,11 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
     //CK_OBJECT_CLASS object_class = CKO_PUBLIC_KEY;
 
     CK_ATTRIBUTE attribute[] = {
+        {CKA_CLASS, &object_class, sizeof(object_class)},
         {CKA_ID, _default_rsa_key_id, sizeof(_default_rsa_key_id)},
-        {CKA_CLASS, &object_class, sizeof(object_class)}
     };
 
-    auto result = _func_list->C_FindObjectsInit(_session, attribute, 2);
+    auto result = _func_list->C_FindObjectsInit(_session, attribute, sizeof(attribute) / sizeof(CK_ATTRIBUTE));
     if (result != CKR_OK) {
         throw TokenException(result, error_str);
     }
@@ -426,6 +426,21 @@ CK_OBJECT_HANDLE Token::find_object_by_key_id(int key_id, CK_OBJECT_CLASS object
         throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定の ID を持つオブジェクトが見つかりません");
     }
 
+    // RSA 鍵かどうかの確認
+    CK_KEY_TYPE key_type;
+    CK_ATTRIBUTE ecdsa_attribute[] = {
+        {CKA_KEY_TYPE, &key_type, sizeof(CK_KEY_TYPE)}
+    };
+
+    result = _func_list->C_GetAttributeValue(_session, ret, ecdsa_attribute, 1);
+    if (result != CKR_OK) {
+        throw TokenException(result, error_str);
+    }
+
+    if (key_type != CKK_RSA) {
+        throw OtherException(SHALOA_RESULT_ERROR_KEY_NOT_FOUND, "指定された鍵は RSA 鍵でないため、使用できません");
+    }
+
     return ret;
 }
 
@@ -433,11 +448,13 @@ CK_OBJECT_HANDLE Token::find_rsa_key_by_modulus_hash(const std::vector<uint8_t>&
 {
     std::string error_str = "RSA 鍵の検索に失敗しました";
 
+    CK_KEY_TYPE rsa_key_type = CKK_RSA;
     CK_ATTRIBUTE attribute[] = {
-        {CKA_CLASS, &object_class, sizeof(object_class)}
+        {CKA_CLASS, &object_class, sizeof(object_class)},
+        {CKA_KEY_TYPE, &rsa_key_type, sizeof(CK_KEY_TYPE)}
     };
 
-    auto result = _func_list->C_FindObjectsInit(_session, attribute, 1);
+    auto result = _func_list->C_FindObjectsInit(_session, attribute, sizeof(attribute) / sizeof(CK_ATTRIBUTE));
     CK_OBJECT_HANDLE ret = CK_INVALID_HANDLE;
     CK_ULONG object_count = 0;
 
