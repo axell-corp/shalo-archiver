@@ -67,7 +67,7 @@ checker.init(
         : lic.licenseText;
       text += "\n\n\n\n";
 
-      const url = lic.repository || `https://www.npmjs.com/package/${lic.name}`;
+      const url = `https://www.npmjs.com/package/${lic.name}`;
       csvText += `${lic.name},${lic.version},${url},${lic.licenses},\n`;
 
       if (
