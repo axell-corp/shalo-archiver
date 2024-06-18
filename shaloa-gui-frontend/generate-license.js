@@ -68,7 +68,8 @@ checker.init(
       text += "\n\n\n\n";
 
       const url = `https://www.npmjs.com/package/${lic.name}`;
-      csvText += `${lic.name},${lic.version},${url},${lic.licenses},\n`;
+      const memo = overrideNames.includes(lic.name) ? "" : "自動生成";
+      csvText += `${lic.name},${lic.version},${url},${lic.licenses},,,,${memo}\n`;
 
       if (
         !containsLicense(lic.licenseFile) &&
