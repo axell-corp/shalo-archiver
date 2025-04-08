@@ -71,13 +71,13 @@ jobs:
         working-directory: main
 
       - name: Archive shaloArchiver
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: shaloa-gui-frontend-windows
           path: main/shaloa-gui-frontend/dist/*.exe
 
       - name: Archive license_list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: license_list
           path: main/shaloa-gui-frontend/dist/license_list.csv
