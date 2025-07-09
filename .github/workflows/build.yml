@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '41 3 1 2/2 *' # 偶数月の 1 日、午前 3 時 41 分 (UTC)
   workflow_dispatch:
 
 jobs:
