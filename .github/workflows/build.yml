@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout archiver
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           ref: ${{ (github.event_name == 'workflow_dispatch' && github.ref_name) || 'main' }}
           path: main
@@ -22,14 +22,14 @@ jobs:
 
       - name: Cache boost
         id: cache-boost
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: boost
           key: ${{ runner.os }}-boost
 
       - name: Checkout boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: boostorg/boost
           ref: boost-1.82.0
@@ -57,12 +57,12 @@ jobs:
         working-directory: boost
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: '18'
           cache: npm
@@ -73,13 +73,13 @@ jobs:
         working-directory: main
 
       - name: Archive shaloArchiver
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: shaloa-gui-frontend-windows
           path: main/shaloa-gui-frontend/dist/*.exe
 
       - name: Archive license_list
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: license_list
           path: main/shaloa-gui-frontend/dist/license_list.csv
